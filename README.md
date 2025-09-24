@@ -1,5 +1,6 @@
 # LIFT-pytorch
 Using pytorch to implement the model in the paper Lift: Multi-label learning with label-specific features
+with python 3.8
 
 @article{zhang2013review,
   title={A review on multi-label learning algorithms},
