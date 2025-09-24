@@ -147,8 +147,15 @@ Outputs = torch.tensor(np.array(Outputs), dtype=torch.double)
 Pre_Labels = torch.tensor(np.array(Pre_Labels), dtype=torch.float32)
 
 hamming = hamming_loss(test_target, Pre_Labels)
-ranking_loss = label_ranking_loss(test_target, Outputs)
+ranking_loss = ranking_loss(Outputs, test_target)
 avg_precision = average_precision(Outputs, test_target)
+coverage = coverage(Outputs, test_target)
+one_error = one_error(Outputs, test_target)
 
-print("Hamming Loss: %.5f\nRanking Loss: %.5f\nAverage Precision: %.5f" % (hamming, ranking_loss, avg_precision))
+print("Hamming Loss: %.5f\n"
+      "Ranking Loss: %.5f\n"
+      "Average Precision: %.5f\n"
+      "Coverage: %.5f\n"
+      "One Error: %.5f" % (hamming, ranking_loss, avg_precision, coverage, one_error))
+
 
