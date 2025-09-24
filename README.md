@@ -3,6 +3,20 @@ Using pytorch to implement the model in the paper Lift: Multi-label learning wit
 
 with python 3.8
 
+others
+
+torch 2.0.0(cpu / cu118)
+
+torchvision 0.15.1
+
+scikit-learn 1.3.2
+
+scipy 1.10.1
+
+numpy 1.24.4
+
+optional: torch-cluster 1.6.3 torch-geometric 1.7.2 torch-scatter 2.1.2 torch-sparse 0.6.18 torch-spline-conv 1.2.2
+
 @article{zhang2013review,
   title={A review on multi-label learning algorithms},
   author={Zhang, Min-Ling and Zhou, Zhi-Hua},
