@@ -1,5 +1,6 @@
-# LIFT-pytorch
-Using pytorch to implement the model in the paper Lift: Multi-label learning with label-specific features
+# Lift: Multi-label learning with label-specific features -Python
+Using pytorch to implement the model in the paper：
+## Lift: Multi-label learning with label-specific features
 
 with python 3.8
 
