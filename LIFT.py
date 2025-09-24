@@ -20,11 +20,11 @@ test_data = data['Xgen']
 train_target = data['Yapp']
 test_target = data['Ygen']
 
-train_data = torch.tensor(train_data, dtype=torch.float32)  # 训练数据
-train_target = torch.tensor(train_target.T, dtype=torch.float32)  # 训练目标
+train_data = torch.tensor(train_data, dtype=torch.float32)  # data for train with instance * dim
+train_target = torch.tensor(train_target.T, dtype=torch.float32)  # target for train with instance * class
 
-test_data = torch.tensor(test_data, dtype=torch.float32)  # 测试数据
-test_target = torch.tensor(test_target.T, dtype=torch.float32)  # 测试目标
+test_data = torch.tensor(test_data, dtype=torch.float32)  # data for test
+test_target = torch.tensor(test_target.T, dtype=torch.float32)  # target for test
 
 ratio = 0.1
 num_train, dim = train_data.size()
@@ -36,8 +36,8 @@ N_Centers = []
 for i in range(num_class):
     print(f'Performing clustering for the {i+1}/{num_class} class')
 
-    p_idx = (train_target[i] == 1).nonzero().squeeze()  # 正类的索引
-    n_idx = torch.arange(num_train)[~torch.isin(torch.arange(num_train), p_idx)]  # 负类的索引
+    p_idx = (train_target[i] == 1).nonzero().squeeze()  # index for positive class
+    n_idx = torch.arange(num_train)[~torch.isin(torch.arange(num_train), p_idx)]  # index for negative class
 
     p_data = train_data[p_idx]
     n_data = train_data[n_idx]
@@ -56,19 +56,13 @@ for i in range(num_class):
     P_Centers.append(POS_C)
     N_Centers.append(NEG_C)
 
-# for i in range(len(P_Centers)):
-#     print(P_Centers[i].shape)
-#     print(N_Centers[i].shape)
-
 Models = []
 
-# SVM训练部分
+# SVM training
 for i in range(num_class):
     print(f'Building classifiers: {i+1}/{num_class}')
 
     centers = np.vstack([P_Centers[i], N_Centers[i]])
-
-    # print(centers.shape)
 
     num_center = centers.shape[0]
 
@@ -79,7 +73,6 @@ for i in range(num_class):
 
     blocksize = 5000 - num_center
     num_block = int(np.ceil(num_train / blocksize))
-    # print(num_block, num_train, blocksize)
 
     for j in range(num_block-1):
         low = j * blocksize
@@ -92,9 +85,8 @@ for i in range(num_class):
     low = (num_block - 1) * blocksize
     high = num_train
     tmp_mat = np.vstack([centers, train_data[low:high]])
-    # print(tmp_mat.shape)
     tmp_mat = torch.tensor(tmp_mat, dtype=torch.float32)
-    Y = torch.cdist(tmp_mat, tmp_mat)
+    Y = torch.cdist(tmp_mat, tmp_mat)  # instance * instance
     data.append(Y[num_center:(num_center + high - low), :num_center].numpy())
 
     training_instance_matrix = np.vstack(data)
@@ -159,3 +151,4 @@ ranking_loss = label_ranking_loss(test_target, Outputs)
 avg_precision = average_precision(Outputs, test_target)
 
 print("Hamming Loss: %.5f\nRanking Loss: %.5f\nAverage Precision: %.5f" % (hamming, ranking_loss, avg_precision))
+
