@@ -28,6 +28,7 @@ optional: torch-cluster 1.6.3 torch-geometric 1.7.2 torch-scatter 2.1.2 torch-sp
   year={2013},
   publisher={IEEE}
 }
+
 @article{zhang2014lift,
   title={Lift: Multi-label learning with label-specific features},
   author={Zhang, Min-Ling and Wu, Lei},
