@@ -22,6 +22,8 @@ def label_index_preprocessing(outputs, test_target):
         if isinstance(label_indices, int):
             label_indices = [label_indices]
         not_label_indices = (temp != 1).nonzero().squeeze().tolist()
+        if isinstance(not_label_indices, int):
+            not_label_indices = [not_label_indices]
 
         label.append(label_indices)
         not_label.append(not_label_indices)
@@ -127,4 +129,5 @@ def ranking_loss(outputs, test_target):
 
     ranking_loss = ranking_loss / num_instance
     return ranking_loss
+
 
